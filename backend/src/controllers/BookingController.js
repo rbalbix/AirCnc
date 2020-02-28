@@ -1,3 +1,4 @@
+const User = require('../models/User');
 const Booking = require('../models/Booking');
 
 module.exports = {
@@ -7,17 +8,18 @@ module.exports = {
         const { spot_id } = req.params;
         const { date } = req.body;
 
-        const user = User.findById(user_id);
+        const user = await User.findById(user_id);
+
         if (!user)
             return res.status(400).json({ error: 'User does not exists' });
 
-        const booking = Booking.create({
+        const booking = await Booking.create({
             user: user_id,
             spot: spot_id,
             date
         });
 
-        await (await booking).populate('spot').populate('user');
+        await booking.populate('spot').populate('user').execPopulate();
 
         return res.json(booking);
     }
