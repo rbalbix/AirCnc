@@ -1,9 +1,12 @@
 import React, { useState, useEffect } from 'react';
+import { withNavigation } from 'react-navigation';
 import { Text, View, StyleSheet, FlatList, Image, TouchableOpacity } from 'react-native';
 
 import api from '../services/api';
 
-export default function SpotList({ tech }) {
+import logo from '../assets/logo.png';
+
+function SpotList({ tech, navigation }) {
   const [spots, setSpots] = useState([]);
 
   useEffect(() => {
@@ -18,6 +21,10 @@ export default function SpotList({ tech }) {
     loadSpots();
   }, []);
 
+  function handleNavigate(id) {
+    navigation.navigate('Book', { id });
+  }
+
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Empresas que usam <Text style={styles.bold}>{tech}</Text></Text>
@@ -27,14 +34,14 @@ export default function SpotList({ tech }) {
         data={spots}
         keyExtractor={spot => spot._id}
         horizontal
-        showsVerticalScrollIndicator={false}
+        showsHorizontalScrollIndicator={false}
         renderItem={({ item }) => (
           <View style={styles.listItem}>
             <Image style={styles.thumbnail} source={{ uri: item.thumbnail_url }} />
             <Text style={styles.company}>{item.company}</Text>
             <Text style={styles.price}>{item.price ? `R$${item.price}/dia` : 'GRATUITO'}</Text>
 
-            <TouchableOpacity onPress={() => { }} style={styles.button}>
+            <TouchableOpacity onPress={() => handleNavigate(item._id)} style={styles.button}>
               <Text style={styles.buttonText}>Solicitar reserva</Text>
             </TouchableOpacity>
           </View>
@@ -53,24 +60,24 @@ const styles = StyleSheet.create({
     fontSize: 20,
     color: '#444',
     paddingHorizontal: 20,
-    marginBottom: 15,
+    marginBottom: 15
   },
 
   bold: {
-    fontWeight: 'bold',
+    fontWeight: 'bold'
   },
 
   list: {
-    paddingHorizontal: 20,
+    paddingHorizontal: 20
   },
 
   listItem: {
-    marginRight: 15,
+    marginRight: 15
   },
 
   thumbnail: {
-    width: 200,
-    height: 120,
+    width: 280,
+    height: 168,
     resizeMode: 'cover',
     borderRadius: 2
   },
@@ -99,7 +106,9 @@ const styles = StyleSheet.create({
 
   buttonText: {
     color: '#FFF',
-    fontSize: 15,
-    fontWeight: 'bold'
+    fontWeight: 'bold',
+    fontSize: 15
   }
 });
+
+export default withNavigation(SpotList);
