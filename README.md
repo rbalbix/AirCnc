@@ -36,6 +36,7 @@ This project was developed with the following technologies:
 - [MongoDB](https://www.mongodb.com/)
 - [Mongoose ODM](https://mongoosejs.com/)
 - [Axios](https://github.com/axios/axios)
+- [Jest - TDD tests](https://jestjs.io)
 - [React](https://reactjs.org)
 - [React Native](https://facebook.github.io/react-native/)
 - [Expo](https://expo.io)
